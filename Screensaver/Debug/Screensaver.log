@@ -1,0 +1,48 @@
+﻿  CScene.cpp
+E:\Projects\SnowCountry\Screensaver\CScene.cpp(6,10): fatal error C1083: Cannot open include file: 'gl\glaux.h': No such file or directory
+  main.cpp
+E:\Projects\SnowCountry\Screensaver\main.cpp(56,2): error C3861: 'glClearColor': identifier not found
+E:\Projects\SnowCountry\Screensaver\main.cpp(57,5): error C3861: 'glViewport': identifier not found
+E:\Projects\SnowCountry\Screensaver\main.cpp(58,18): error C2065: 'GL_PROJECTION': undeclared identifier
+E:\Projects\SnowCountry\Screensaver\main.cpp(58,5): error C3861: 'glMatrixMode': identifier not found
+E:\Projects\SnowCountry\Screensaver\main.cpp(59,5): error C3861: 'glLoadIdentity': identifier not found
+E:\Projects\SnowCountry\Screensaver\main.cpp(60,5): error C3861: 'gluPerspective': identifier not found
+E:\Projects\SnowCountry\Screensaver\main.cpp(62,18): error C2065: 'GL_MODELVIEW': undeclared identifier
+E:\Projects\SnowCountry\Screensaver\main.cpp(62,5): error C3861: 'glMatrixMode': identifier not found
+E:\Projects\SnowCountry\Screensaver\main.cpp(63,5): error C3861: 'glLoadIdentity': identifier not found
+E:\Projects\SnowCountry\Screensaver\main.cpp(65,14): error C2065: 'GL_LEQUAL': undeclared identifier
+E:\Projects\SnowCountry\Screensaver\main.cpp(65,2): error C3861: 'glDepthFunc': identifier not found
+E:\Projects\SnowCountry\Screensaver\main.cpp(66,11): error C2065: 'GL_DEPTH_TEST': undeclared identifier
+E:\Projects\SnowCountry\Screensaver\main.cpp(66,2): error C3861: 'glEnable': identifier not found
+E:\Projects\SnowCountry\Screensaver\main.cpp(67,11): error C2065: 'GL_TEXTURE_2D': undeclared identifier
+E:\Projects\SnowCountry\Screensaver\main.cpp(67,2): error C3861: 'glEnable': identifier not found
+E:\Projects\SnowCountry\Screensaver\main.cpp(68,9): error C2065: 'GL_SHADE_MODEL': undeclared identifier
+E:\Projects\SnowCountry\Screensaver\main.cpp(68,24): error C2065: 'GL_NICEST': undeclared identifier
+E:\Projects\SnowCountry\Screensaver\main.cpp(68,2): error C3861: 'glHint': identifier not found
+E:\Projects\SnowCountry\Screensaver\main.cpp(71,12): error C2065: 'GL_LIGHTING': undeclared identifier
+E:\Projects\SnowCountry\Screensaver\main.cpp(71,2): error C3861: 'glEnable': identifier not found
+E:\Projects\SnowCountry\Screensaver\main.cpp(72,12): error C2065: 'GL_LIGHT0': undeclared identifier
+E:\Projects\SnowCountry\Screensaver\main.cpp(72,2): error C3861: 'glEnable': identifier not found
+E:\Projects\SnowCountry\Screensaver\main.cpp(75,13): error C2065: 'GL_LIGHT0': undeclared identifier
+E:\Projects\SnowCountry\Screensaver\main.cpp(75,24): error C2065: 'GL_AMBIENT': undeclared identifier
+E:\Projects\SnowCountry\Screensaver\main.cpp(75,2): error C3861: 'glLightfv': identifier not found
+E:\Projects\SnowCountry\Screensaver\main.cpp(78,13): error C2065: 'GL_LIGHT0': undeclared identifier
+E:\Projects\SnowCountry\Screensaver\main.cpp(78,24): error C2065: 'GL_DIFFUSE': undeclared identifier
+E:\Projects\SnowCountry\Screensaver\main.cpp(78,2): error C3861: 'glLightfv': identifier not found
+E:\Projects\SnowCountry\Screensaver\main.cpp(81,13): error C2065: 'GL_LIGHT0': undeclared identifier
+E:\Projects\SnowCountry\Screensaver\main.cpp(81,24): error C2065: 'GL_SPECULAR': undeclared identifier
+E:\Projects\SnowCountry\Screensaver\main.cpp(81,2): error C3861: 'glLightfv': identifier not found
+E:\Projects\SnowCountry\Screensaver\main.cpp(84,13): error C2065: 'GL_LIGHT0': undeclared identifier
+E:\Projects\SnowCountry\Screensaver\main.cpp(84,24): error C2065: 'GL_POSITION': undeclared identifier
+E:\Projects\SnowCountry\Screensaver\main.cpp(84,2): error C3861: 'glLightfv': identifier not found
+E:\Projects\SnowCountry\Screensaver\main.cpp(86,2): error C2065: 'GLfloat': undeclared identifier
+E:\Projects\SnowCountry\Screensaver\main.cpp(86,10): error C2146: syntax error: missing ';' before identifier 'ambient_lightModel'
+E:\Projects\SnowCountry\Screensaver\main.cpp(86,10): error C2065: 'ambient_lightModel': undeclared identifier
+E:\Projects\SnowCountry\Screensaver\main.cpp(86,29): error C2059: syntax error: ']'
+E:\Projects\SnowCountry\Screensaver\main.cpp(86,33): error C2143: syntax error: missing ';' before '{'
+E:\Projects\SnowCountry\Screensaver\main.cpp(86,58): error C2143: syntax error: missing ';' before '}'
+E:\Projects\SnowCountry\Screensaver\main.cpp(87,17): error C2065: 'GL_LIGHT_MODEL_AMBIENT': undeclared identifier
+E:\Projects\SnowCountry\Screensaver\main.cpp(87,41): error C2065: 'ambient_lightModel': undeclared identifier
+E:\Projects\SnowCountry\Screensaver\main.cpp(87,2): error C3861: 'glLightModelfv': identifier not found
+E:\Projects\SnowCountry\Screensaver\main.cpp(89,36): warning C4305: 'initializing': truncation from 'double' to 'float'
+  Generating Code...
