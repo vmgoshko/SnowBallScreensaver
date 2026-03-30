@@ -1,10 +1,10 @@
 #include "CScene.h"
+#include <windows.h>
 #include <time.h>
+#include <algorithm>
 #include <cmath>
 #include <gl\gl.h>
 #include <gl\glu.h>			// Header File For The GLu32 Library
-#include <gl\glaux.h>		// Header File For The Glaux Library
-#include <gl\glut.h>
 #include <iostream>
 using std::cout;
 using std::endl;
@@ -12,8 +12,55 @@ using std::endl;
 static float l_fPosition[] = { 0.0f, 0.0f, 55.0f, 1.0f };
 
 void EnableFog();
+namespace
+{
+	bool LoadBitmapTextureData(const char* name, std::vector<unsigned char>& pixels, GLsizei& width, GLsizei& height)
+	{
+		HBITMAP bitmap = static_cast<HBITMAP>(LoadImageA(nullptr, name, IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE | LR_CREATEDIBSECTION));
+		if (bitmap == nullptr)
+			return false;
+
+		BITMAP bitmapInfo = {};
+		if (GetObject(bitmap, sizeof(bitmapInfo), &bitmapInfo) == 0)
+		{
+			DeleteObject(bitmap);
+			return false;
+		}
+
+		BITMAPINFO info = {};
+		info.bmiHeader.biSize = sizeof(info.bmiHeader);
+		info.bmiHeader.biWidth = bitmapInfo.bmWidth;
+		info.bmiHeader.biHeight = -bitmapInfo.bmHeight;
+		info.bmiHeader.biPlanes = 1;
+		info.bmiHeader.biBitCount = 24;
+		info.bmiHeader.biCompression = BI_RGB;
+
+		width = static_cast<GLsizei>(bitmapInfo.bmWidth);
+		height = static_cast<GLsizei>(bitmapInfo.bmHeight);
+		pixels.resize(static_cast<size_t>(width) * static_cast<size_t>(height) * 3u);
+
+		HDC screenDc = GetDC(nullptr);
+		const int scanLines = GetDIBits(screenDc, bitmap, 0, static_cast<UINT>(height), pixels.data(), &info, DIB_RGB_COLORS);
+		ReleaseDC(nullptr, screenDc);
+		DeleteObject(bitmap);
+
+		if (scanLines == 0)
+		{
+			pixels.clear();
+			return false;
+		}
+
+		for (size_t i = 0; i + 2 < pixels.size(); i += 3)
+		{
+			std::swap(pixels[i], pixels[i + 2]);
+		}
+
+		return true;
+	}
+}
+
 CScene::CScene(stProperties& props) 
-	: PI(acos(-1.f))
+	: PI(static_cast<float>(acos(-1.0)))
 {
 	float scale = 1.5;
 	mFlakesCount = props.mFlakesCount;
@@ -54,9 +101,11 @@ void CScene::Render(HDC hDC)
 
 void CScene::LoadTexture(const char* name)
 {
-	AUX_RGBImageRec *pTextureImage = auxDIBImageLoad(name);
 	GLuint tempTexture;
-	if( pTextureImage != NULL )
+	std::vector<unsigned char> pixels;
+	GLsizei width = 0;
+	GLsizei height = 0;
+	if (LoadBitmapTextureData(name, pixels, width, height))
 	{
 		glGenTextures( 1, &tempTexture );
 		glBindTexture( GL_TEXTURE_2D, tempTexture);
@@ -64,16 +113,12 @@ void CScene::LoadTexture(const char* name)
 		glTexParameteri( GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER, GL_LINEAR );
 		glTexParameteri( GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER, GL_LINEAR );
 
-		glTexImage2D( GL_TEXTURE_2D, 0, 3, pTextureImage->sizeX, pTextureImage->sizeY, 0,
-			GL_RGB, GL_UNSIGNED_BYTE, pTextureImage->data );
+		glTexImage2D( GL_TEXTURE_2D, 0, 3, width, height, 0,
+			GL_RGB, GL_UNSIGNED_BYTE, pixels.data() );
 	}
-
-	if( pTextureImage )
+	else
 	{
-		if( pTextureImage->data )
-			free( pTextureImage->data );
-
-		free( pTextureImage );
+		tempTexture = 0;
 	}
 
 	mTextures.push_back(tempTexture);
@@ -91,7 +136,7 @@ void CScene::RenderFlake( stSnowFlake& flake )
 
 	float color[] = {1,1,1,1};
 	glMaterialfv(GL_FRONT_AND_BACK,GL_AMBIENT_AND_DIFFUSE,color);
-	glLineWidth(0.03);
+	glLineWidth(0.03f);
 	glBegin(GL_LINES);
 	glVertex3f(x - flakeSize/2, y, z);
 	glVertex3f(x + flakeSize/2, y, z);
@@ -117,7 +162,7 @@ void CScene::RenderFlake( stSnowFlake& flake )
 
 void CScene::CreateFlake()
 {
-	stSnowFlake flake = {stPoint(rand()%mXSize - mXSize/2, rand()%mYSize - mYSize/2,mZMax + rand()%100),stPoint(0,0,-1)};
+	stSnowFlake flake = {stPoint(static_cast<float>(rand()%mXSize - mXSize/2), static_cast<float>(rand()%mYSize - mYSize/2), mZMax + static_cast<float>(rand()%100)),stPoint(0,0,-1)};
 	mFlakes.push_back(flake);
 }
 
@@ -129,16 +174,18 @@ void CScene::InitFlakes()
 
 void CScene::TranslateFlakes()
 {
-	for(int i = 0; i < mFlakes.size(); i++){
+	for(size_t i = 0; i < mFlakes.size(); ){
 		 mFlakes[i].mPos += mFlakes[i].mDir * mFlakesVelocity;
 		 
-		 mFlakes[i].mPos.mX += sin( mFlakes[i].mPos.mZ)/15;
-		 mFlakes[i].mPos.mY += cos( mFlakes[i].mPos.mZ)/15;
+		 mFlakes[i].mPos.mX += static_cast<float>(sin( mFlakes[i].mPos.mZ)/15.0);
+		 mFlakes[i].mPos.mY += static_cast<float>(cos( mFlakes[i].mPos.mZ)/15.0);
 		
 		 if(mFlakes[i].mPos.mZ < 0){
-			mFlakes.erase(mFlakes.begin()+i);
+			mFlakes.erase(mFlakes.begin() + static_cast<vector<stSnowFlake>::difference_type>(i));
 			CreateFlake();
+			continue;
 		 }
+		 ++i;
 	}
 }
 
@@ -221,7 +268,7 @@ void CScene::RenderTree()
 void CScene::RenderFlakes()
 {
 	//Drawing snow flakes
-	for(int i = 0; i < mFlakes.size(); i++){
+	for(size_t i = 0; i < mFlakes.size(); i++){
 		RenderFlake(mFlakes[i]);
 	}
 }

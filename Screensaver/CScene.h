@@ -16,32 +16,32 @@ struct stPoint
 
 	}
 
-	stPoint operator *(stPoint& r){
+	stPoint operator *(const stPoint& r) const{
 		return stPoint(this->mX *r.mX,
 			this->mY *r.mY,
 			this->mZ *r.mZ);
 	}
 
-	stPoint operator /(float alpha){
+	stPoint operator /(float alpha) const{
 		return stPoint(this->mX / alpha,
 			this->mY / alpha,
 			this->mZ / alpha);
 	}
 
-	stPoint operator *(float alpha){
+	stPoint operator *(float alpha) const{
 		return stPoint(this->mX * alpha,
 			this->mY * alpha,
 			this->mZ * alpha);
 	}
 
-	stPoint operator +=(stPoint& r){
+	stPoint& operator +=(const stPoint& r){
 		this->mX += r.mX;
 		this->mY += r.mY;
 		this->mZ += r.mZ;
 		return *this;
 	}
 
-	float norma()
+	float norma() const
 	{
 		return sqrt(mX*mX + mY*mY+ mZ*mZ);
 	}
